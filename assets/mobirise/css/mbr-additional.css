@@ -2204,7 +2204,7 @@ body {
 .cid-rkFEZS7qzp .user_image img {
   width: 100%;
   min-width: 100%;
-  min-height: 100%;
+  /*min-height: 100%;*/
 }
 @media (max-width: 230px) {
   .cid-rkFEZS7qzp .user_image {
@@ -2781,7 +2781,7 @@ body {
 .cid-rkFUEDsT2H .testimonials-container .testimonials-item .user .user_image img {
   width: 100%;
   min-width: 100%;
-  min-height: 100%;
+  /*min-height: 100%;*/
 }
 .cid-rkFUEDsT2H .testimonials-container .testimonials-item .user .testimonials-caption {
   padding: 2rem;
