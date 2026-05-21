@@ -59,7 +59,10 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-base);
+  scroll-behavior: smooth;
 }
+
+section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
 
 body {
   min-height: 100dvh;
@@ -77,13 +80,21 @@ body {
 body::before {
   content: '';
   position: fixed;
-  inset: 0;
+  inset: -10%;
   z-index: -2;
   background:
     radial-gradient(60vmax 50vmax at 12% 8%, rgba(124, 227, 255, 0.22), transparent 60%),
     radial-gradient(55vmax 50vmax at 85% 22%, rgba(179, 136, 255, 0.22), transparent 62%),
     radial-gradient(50vmax 45vmax at 60% 95%, rgba(255, 122, 182, 0.16), transparent 60%),
     radial-gradient(80vmax 80vmax at 50% 50%, #0A0C18, #06070D 70%);
+  animation: aurora-drift 60s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-2%, 1.5%, 0) scale(1.04); }
+  100% { transform: translate3d(2%, -1%, 0) scale(1.02); }
 }
 
 body::after {
@@ -137,7 +148,28 @@ section + section { margin-top: var(--space-section); }
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+  z-index: 1;
 }
+
+/* Pointer-tracking specular highlight — JS sets --mx --my as 0-100% */
+.glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 240ms ease;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.10),
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 70%
+  );
+  z-index: 0;
+}
+.glass:hover::after { opacity: 1; }
+.glass > * { position: relative; z-index: 2; }
 
 .glass-pad { padding: 1.75rem; }
 
@@ -239,6 +271,23 @@ a:focus-visible, button:focus-visible {
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+.footer {
+  max-width: var(--measure);
+  margin: 4rem auto 3rem;
+  padding: 1.25rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--edge);
+}
+.footer a { color: var(--ink-muted); }
+.footer a:hover { color: var(--accent); }
+.dot-sep { color: var(--ink-faint); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

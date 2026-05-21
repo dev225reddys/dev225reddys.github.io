@@ -1,0 +1,91 @@
+---
+const items = [
+  { label: 'Shipping', value: 'sayuk-hms', kind: 'dev' },
+  { label: 'Running',  value: 'markets stack', kind: 'live' },
+  { label: 'Writing',  value: 'on devendra.me', kind: 'shipped' },
+];
+const colors: Record<string, { dot: string; glow: string }> = {
+  live: { dot: '#7CE3FF', glow: 'rgba(124, 227, 255, 0.55)' },
+  dev:  { dot: '#B388FF', glow: 'rgba(179, 136, 255, 0.55)' },
+  shipped: { dot: '#9AE6A0', glow: 'rgba(154, 230, 160, 0.55)' },
+};
+const today = new Date();
+const stamp = today.toISOString().slice(0, 10);
+---
+<section class="now glass" aria-label="Currently working on">
+  <div class="now-head">
+    <span class="now-label mono">/ now</span>
+    <span class="now-time mono">{stamp}</span>
+  </div>
+  <ul class="now-list">
+    {items.map(i => {
+      const c = colors[i.kind];
+      return (
+        <li>
+          <span class="dot" style={`--dot:${c.dot};--glow:${c.glow}`}></span>
+          <span class="label mono">{i.label}</span>
+          <span class="value">{i.value}</span>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<style>
+  .now {
+    padding: 0.85rem 1.1rem;
+    margin-top: 1rem;
+  }
+  .now-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--edge);
+    margin-bottom: 0.6rem;
+  }
+  .now-label {
+    color: var(--ink-muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .now-time { color: var(--ink-faint); font-size: 0.7rem; }
+
+  .now-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .now-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.1rem;
+    min-width: 0;
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius: 999px;
+    background: var(--dot);
+    box-shadow: 0 0 10px var(--glow);
+    flex: 0 0 auto;
+  }
+  .label {
+    color: var(--ink-muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .value {
+    color: var(--ink);
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+    .now-list { grid-template-columns: 1fr; gap: 0.1rem; }
+    .now-list li { padding: 0.35rem 0.1rem; }
+  }
+</style>

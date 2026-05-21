@@ -14,13 +14,19 @@ const { status = 'Open to new product collaborations' } = Astro.props;
   </h1>
 
   <p class="lede">
-    I build software products — a hospital management system,
+    I build software products end-to-end — a hospital management system,
     a markets stack, a few things in between.
   </p>
 
   <div class="meta-row">
-    <span class="meta-item mono"><span class="kbd">⌘</span> Hyderabad, IN</span>
-    <span class="meta-item mono"><span class="kbd">/</span> 2026</span>
+    <span class="meta-item mono">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Hyderabad, IN
+    </span>
+    <span class="meta-item mono">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      2026
+    </span>
   </div>
 
   <div class="cta-row">
@@ -135,20 +141,11 @@ const { status = 'Open to new product collaborations' } = Astro.props;
     gap: 0.75rem 1.25rem;
     margin-bottom: 2rem;
   }
-  .meta-item { display: inline-flex; align-items: center; gap: 0.5rem; }
-  .kbd {
-    display: inline-grid;
-    place-items: center;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 4px;
-    border-radius: 5px;
-    background: var(--bg-elev-2);
-    border: 1px solid var(--edge);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset;
-    font-size: 0.7rem;
-    color: var(--ink-soft);
+  .meta-item {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    color: var(--ink-muted);
   }
+  .meta-item svg { color: var(--ink-faint); }
 
   .cta-row {
     display: flex;
