@@ -197,12 +197,26 @@ section + section { margin-top: var(--space-section); }
 }
 
 .nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--ink);
   font-weight: 500;
-  padding-right: 0.5rem;
+  padding: 2px 10px 2px 4px;
   margin-right: 0.25rem;
   border-right: 1px solid var(--edge);
+  border-radius: 999px;
+  transition: background 160ms ease;
 }
+.nav-brand:hover { background: var(--bg-elev-1); color: var(--ink); }
+.brand-mark {
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+    0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.brand-text { letter-spacing: -0.01em; }
+.brand-tld { color: var(--ink-muted); font-weight: 400; }
 
 .nav a {
   color: var(--ink-soft);
@@ -300,7 +314,8 @@ a:focus-visible, button:focus-visible {
   :root { --space-section: 3.5rem; }
   .container { padding: calc(var(--nav-h) + 2rem) 1rem 4rem; }
   .glass-pad { padding: 1.25rem; }
-  .nav { font-size: 0.72rem; padding-left: 12px; }
-  .nav-brand { padding-right: 0.35rem; }
+  .nav { font-size: 0.72rem; padding-left: 6px; }
+  .nav-brand { padding: 2px 6px 2px 2px; }
+  .brand-text { display: none; }
   .nav a { padding: 6px 8px; }
 }
