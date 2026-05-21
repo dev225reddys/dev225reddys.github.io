@@ -11,6 +11,12 @@ const { status = 'Open to new product collaborations.' } = Astro.props;
   <p class="meta">
     <span class="mono">Hyderabad · 2026</span>
   </p>
+  <ul class="links">
+    <li><a href="mailto:mail@devendra.me">mail@devendra.me</a></li>
+    <li><a href="https://github.com/dev225reddys">github</a></li>
+    <li><a href="https://www.linkedin.com/in/dev225reddys">linkedin</a></li>
+    <li><a href="https://twitter.com/dev225reddys">twitter</a></li>
+  </ul>
   <p class="status">{status}</p>
 </section>
 
@@ -26,6 +32,11 @@ const { status = 'Open to new product collaborations.' } = Astro.props;
   }
   .lede { font-size: 1.25rem; line-height: 1.5; margin-bottom: 1.25rem; }
   .meta { margin-bottom: 1rem; }
+  .links {
+    display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .links a { font-family: var(--font-mono); font-size: 0.85rem; }
   .status {
     font-family: var(--font-mono);
     font-size: 0.85rem;
