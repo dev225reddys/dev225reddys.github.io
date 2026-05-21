@@ -1,0 +1,91 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '../styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description = 'Devendra Reddy — founder and product builder.', ogImage = '/og.png' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#07080F" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <ViewTransitions />
+</head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <a href="/" class="nav-brand">dr</a>
+    {isHome ? (
+      <>
+        <a href="#about">about</a>
+        <a href="#projects">work</a>
+        <a href="#writing">writing</a>
+        <a href="#contact">contact</a>
+      </>
+    ) : (
+      <>
+        <a href="/">home</a>
+        <a href="/writing/">writing</a>
+      </>
+    )}
+  </nav>
+  <main class="container">
+    <slot />
+  </main>
+  <footer class="footer">
+    <span class="mono">© {year} Devendra Reddy</span>
+    <span class="dot-sep" aria-hidden="true">·</span>
+    <span class="mono">built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a></span>
+    <span class="dot-sep" aria-hidden="true">·</span>
+    <a class="mono" href="https://github.com/dev225reddys/dev225reddys.github.io" target="_blank" rel="noopener">source</a>
+  </footer>
+
+  <script is:inline>
+    (function () {
+      const apply = () => {
+        const cards = document.querySelectorAll('.glass');
+        cards.forEach(card => {
+          if (card.dataset.spot === '1') return;
+          card.dataset.spot = '1';
+          card.addEventListener('pointermove', e => {
+            const r = card.getBoundingClientRect();
+            const x = ((e.clientX - r.left) / r.width) * 100;
+            const y = ((e.clientY - r.top) / r.height) * 100;
+            card.style.setProperty('--mx', x + '%');
+            card.style.setProperty('--my', y + '%');
+          });
+          card.addEventListener('pointerleave', () => {
+            card.style.setProperty('--mx', '50%');
+            card.style.setProperty('--my', '50%');
+          });
+        });
+      };
+      apply();
+      document.addEventListener('astro:after-swap', apply);
+    })();
+  </script>
+</body>
+</html>

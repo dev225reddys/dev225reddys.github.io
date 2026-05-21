@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const byYear = posts.reduce<Record<string, typeof posts>>((acc, p) => {
+  const y = String(p.data.date.getFullYear());
+  (acc[y] ||= []).push(p);
+  return acc;
+}, {});
+
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<Layout title="Writing — Devendra Reddy">
+  <header class="page-head">
+    <p class="section-label">writing</p>
+    <h1>Notes on what I'm building.</h1>
+    <p class="sub">Trading systems, hospital software, and the occasional opinion.</p>
+  </header>
+
+  {years.map(year => (
+    <section class="year glass glass-pad">
+      <h2 class="mono year-label">{year}</h2>
+      <ul>
+        {byYear[year].map(p => (
+          <li>
+            <a class="post" href={`/writing/${p.slug}/`}>
+              <span class="date mono">{fmt(p.data.date)}</span>
+              <span class="title">{p.data.title}</span>
+              <svg class="chev" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Layout>
+
+<style>
+  .page-head { margin-bottom: 2.5rem; }
+  .page-head h1 {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    margin: 0.5rem 0 0.5rem;
+  }
+  .page-head .sub { color: var(--ink-muted); }
+
+  .year { padding: 1.5rem 1.6rem; }
+  .year-label {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
+  .year ul { display: flex; flex-direction: column; gap: 0.2rem; }
+  .post {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 0.5rem;
+    color: var(--ink-soft);
+    border-radius: var(--r-md);
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .post:hover { background: var(--bg-elev-1); color: var(--ink); }
+  .date { color: var(--ink-faint); }
+  .title { font-size: 1rem; letter-spacing: -0.01em; }
+  .chev { color: var(--ink-faint); transition: color 200ms, transform 200ms; }
+  .post:hover .chev { color: var(--accent); transform: translateX(2px); }
+</style>

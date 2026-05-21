@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map(post => ({ params: { slug: post.slug }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const words = post.body.trim().split(/\s+/).length;
+const readMins = Math.max(1, Math.round(words / 220));
+---
+<Layout title={`${post.data.title} — Devendra Reddy`} description={post.data.summary}>
+  <article class="glass glass-pad post">
+    <header>
+      <p class="meta mono">
+        <span>{fmt(post.data.date)}</span>
+        <span class="sep">·</span>
+        <span>{readMins} min read</span>
+      </p>
+      <h1>{post.data.title}</h1>
+      <p class="summary">{post.data.summary}</p>
+    </header>
+    <hr class="divider" />
+    <div class="body"><Content /></div>
+    <footer>
+      <a class="back" href="/writing/">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        all posts
+      </a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .post { padding: 2.5rem 2.25rem; }
+  .post header { margin-bottom: 1.5rem; }
+  .meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.6rem;
+    font-size: 0.78rem;
+  }
+  .meta .sep { color: var(--ink-faint); }
+  .post h1 {
+    font-size: clamp(1.9rem, 4vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.75rem;
+  }
+  .summary { color: var(--ink-soft); font-size: 1.05rem; }
+
+  .divider {
+    border: 0;
+    height: 1px;
+    background: var(--edge);
+    margin: 1.75rem 0 1.75rem;
+  }
+
+  .body :global(p) { color: var(--ink-soft); margin-bottom: 1.1rem; font-size: 1.02rem; }
+  .body :global(h2) {
+    font-size: 1.35rem; font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 2.25rem 0 0.85rem;
+  }
+  .body :global(h3) {
+    font-size: 1.1rem; font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin: 1.75rem 0 0.6rem;
+  }
+  .body :global(a) { color: var(--accent); }
+  .body :global(a:hover) { color: var(--ink); }
+  .body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 0.1em 0.4em;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--edge);
+    border-radius: 5px;
+    color: var(--ink);
+  }
+  .body :global(pre) {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--edge);
+    border-radius: var(--r-md);
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    margin: 1.25rem 0;
+  }
+  .body :global(pre code) {
+    background: transparent;
+    border: 0;
+    padding: 0;
+  }
+  .body :global(blockquote) {
+    border-left: 2px solid var(--accent);
+    padding: 0.25rem 0 0.25rem 1rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 1.25rem 0;
+  }
+  .body :global(ul), .body :global(ol) {
+    color: var(--ink-soft);
+    padding-left: 1.25rem;
+    margin-bottom: 1.1rem;
+  }
+  .body :global(ul) { list-style: disc; }
+  .body :global(ol) { list-style: decimal; }
+  .body :global(li) { margin-bottom: 0.4rem; }
+
+  footer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--edge);
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+  }
+  .back:hover { color: var(--accent); }
+</style>

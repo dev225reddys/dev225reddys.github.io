@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<section id="writing">
+  <div class="head">
+    <p class="section-label">writing</p>
+    {posts.length > 0 && (
+      <a class="all" href="/writing/">
+        all posts
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    )}
+  </div>
+  {posts.length === 0 ? (
+    <div class="glass glass-pad empty">
+      <p class="muted">Nothing published yet — soon.</p>
+    </div>
+  ) : (
+    <ul class="posts glass">
+      {posts.map(p => (
+        <li>
+          <a class="post" href={`/writing/${p.slug}/`}>
+            <span class="date mono">{fmt(p.data.date)}</span>
+            <span class="title">{p.data.title}</span>
+            <svg class="chev" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</section>
+
+<style>
+  .head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .head .section-label { margin-bottom: 0; }
+  .all {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+  }
+  .all:hover { color: var(--accent); }
+
+  .posts {
+    overflow: hidden;
+    padding: 0.35rem 0.6rem;
+  }
+  .posts li + li .post { border-top: 1px solid var(--edge); }
+
+  .post {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 0.9rem;
+    color: var(--ink-soft);
+    border-radius: var(--r-md);
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .post:hover { background: var(--bg-elev-1); color: var(--ink); }
+  .post:hover + .post,
+  .post:hover { border-top-color: transparent; }
+
+  .date { color: var(--ink-faint); }
+  .title { font-size: 0.98rem; letter-spacing: -0.01em; }
+  .chev { color: var(--ink-faint); transition: transform 200ms ease, color 200ms ease; }
+  .post:hover .chev { color: var(--accent); transform: translateX(2px); }
+
+  .empty { padding: 1.5rem; }
+</style>

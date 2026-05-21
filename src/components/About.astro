@@ -1,0 +1,80 @@
+---
+const stats = [
+  { value: '3', label: 'Live products' },
+  { value: '8+', label: 'Years building' },
+  { value: '∞', label: 'Curiosity' },
+];
+---
+<section class="about glass glass-pad" id="about">
+  <p class="section-label">about</p>
+  <div class="prose">
+    <p>
+      I'm a builder. I write software end-to-end — backend, infra, frontend,
+      whatever the product needs. The fun part is the experiment loop:
+      prototype something rough, run it against reality, throw out what doesn't
+      work, keep what does.
+    </p>
+    <p>
+      Right now I'm shipping a hospital management system for tier-2/3 India
+      and running a systematic trading stack on the side. Both are real products
+      with real users and real bugs.
+    </p>
+    <p>
+      I'm <strong>open to new product collaborations</strong> — especially with
+      people who care about getting the thing into someone's hands and watching
+      what happens. If that's you, find me below.
+    </p>
+  </div>
+
+  <div class="stats">
+    {stats.map(s => (
+      <div class="stat">
+        <span class="stat-value">{s.value}</span>
+        <span class="stat-label mono">{s.label}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .about { padding: 2.25rem; }
+  .prose p { color: var(--ink-soft); font-size: 1.02rem; }
+  .prose p + p { margin-top: 1.1rem; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--edge);
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 0.5rem;
+    border-radius: var(--r-md);
+    background: var(--bg-elev-1);
+    border: 1px solid var(--edge);
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 600px) {
+    .about { padding: 1.5rem 1.4rem; }
+  }
+</style>
