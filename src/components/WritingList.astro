@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<section>
+  <p class="section-label">writing</p>
+  {posts.length === 0 ? (
+    <p class="muted">Nothing published yet — soon.</p>
+  ) : (
+    <ul class="posts">
+      {posts.map(p => (
+        <li>
+          <span class="mono">{fmt(p.data.date)}</span>
+          <a href={`/writing/${p.slug}/`}>{p.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  )}
+  {posts.length > 0 && <p class="more"><a href="/writing/">All posts →</a></p>}
+</section>
+
+<style>
+  .posts { display: flex; flex-direction: column; gap: 0.75rem; }
+  .posts li { display: flex; gap: 1rem; align-items: baseline; }
+  .more { margin-top: 1.25rem; }
+</style>

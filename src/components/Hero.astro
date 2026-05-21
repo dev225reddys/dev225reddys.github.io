@@ -1,0 +1,39 @@
+---
+interface Props { status?: string; }
+const { status = 'Open to new product collaborations.' } = Astro.props;
+---
+<section class="hero">
+  <h1>Devendra Reddy</h1>
+  <p class="lede">
+    I build software products — a hospital management system, a markets stack,
+    a few things in between.
+  </p>
+  <p class="meta">
+    <span class="mono">Hyderabad · 2026</span>
+  </p>
+  <p class="status">{status}</p>
+</section>
+
+<style>
+  .hero { padding-top: 1rem; }
+  h1 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 2.75rem;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+  .lede { font-size: 1.25rem; line-height: 1.5; margin-bottom: 1.25rem; }
+  .meta { margin-bottom: 1rem; }
+  .status {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    padding: 0.4rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: inline-block;
+    padding-inline: 0.75rem;
+  }
+</style>

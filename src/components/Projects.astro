@@ -1,0 +1,64 @@
+---
+const projects = [
+  {
+    name: 'markets',
+    blurb: 'Systematic F&O trading stack — algo paper engine + execution loop, in production.',
+    year: '2024 – present',
+    status: 'live',
+    href: null,
+  },
+  {
+    name: 'sayuk-hms',
+    blurb: 'Hospital management software for tier-2/3 India. FastAPI + SQLite-per-tenant + React PWA.',
+    year: '2026',
+    status: 'in dev',
+    href: null,
+  },
+  {
+    name: 'sayuk-cloud',
+    blurb: 'Companion cloud layer for sayuk-hms.',
+    year: '2026',
+    status: 'in dev',
+    href: null,
+  },
+  {
+    name: 'social-studio',
+    blurb: 'TBD — fill in once we have the one-liner.',
+    year: '2026',
+    status: 'in dev',
+    href: null,
+  },
+  {
+    name: 'devendra.me',
+    blurb: 'This site. Astro static site, single page + writing.',
+    year: '2026',
+    status: 'open source',
+    href: 'https://github.com/dev225reddys/dev225reddys.github.io',
+  },
+];
+---
+<section>
+  <p class="section-label">projects</p>
+  <ul class="projects">
+    {projects.map(p => (
+      <li class="project">
+        <div class="row">
+          <span class="name">{p.href ? <a href={p.href}>{p.name}</a> : p.name}</span>
+          <span class="mono">{p.year} · {p.status}</span>
+        </div>
+        <p class="blurb">{p.blurb}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .projects { display: flex; flex-direction: column; gap: 1.75rem; }
+  .project { border-top: 1px solid var(--rule); padding-top: 1rem; }
+  .row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 1rem; flex-wrap: wrap;
+  }
+  .name { font-family: var(--font-serif); font-weight: 600; font-size: 1.1rem; }
+  .blurb { color: var(--muted); margin-top: 0.35rem; font-size: 0.95rem; }
+</style>
