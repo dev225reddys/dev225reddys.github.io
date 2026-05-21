@@ -3,55 +3,168 @@ const projects = [
   {
     name: 'markets',
     blurb: 'Systematic F&O trading stack — algo paper engine + execution loop, in production.',
-    year: '2024 – present',
+    year: '2024 — now',
     status: 'live',
+    statusKind: 'live',
+    stack: ['Python', 'Postgres', 'launchd', 'Kite'],
     href: null,
   },
   {
     name: 'sayuk-hms',
-    blurb: 'Hospital management software for tier-2/3 India. FastAPI + SQLite-per-tenant + React PWA.',
+    blurb: 'Hospital management software for tier-2/3 India. SQLite-per-tenant, offline-first.',
     year: '2026',
     status: 'in dev',
+    statusKind: 'dev',
+    stack: ['FastAPI', 'SQLite', 'React PWA'],
     href: null,
   },
   {
     name: 'sayuk-cloud',
-    blurb: 'Companion cloud layer for sayuk-hms.',
+    blurb: 'Companion cloud layer for sayuk-hms — sync, billing, multi-tenant ops.',
     year: '2026',
     status: 'in dev',
+    statusKind: 'dev',
+    stack: ['FastAPI', 'Postgres', 'Cloudflare'],
     href: null,
   },
   {
     name: 'devendra.me',
-    blurb: 'This site. Astro static site, single page + writing.',
+    blurb: 'This site. Astro static site with a writing channel.',
     year: '2026',
-    status: 'open source',
+    status: 'shipped',
+    statusKind: 'shipped',
+    stack: ['Astro', 'TypeScript'],
     href: 'https://github.com/dev225reddys/dev225reddys.github.io',
   },
 ];
+
+const statusColors = {
+  live: { dot: '#7CE3FF', glow: 'rgba(124, 227, 255, 0.5)' },
+  dev: { dot: '#B388FF', glow: 'rgba(179, 136, 255, 0.5)' },
+  shipped: { dot: '#9AE6A0', glow: 'rgba(154, 230, 160, 0.5)' },
+};
 ---
-<section>
+<section id="projects">
   <p class="section-label">projects</p>
   <ul class="projects">
-    {projects.map(p => (
-      <li class="project">
-        <div class="row">
-          <span class="name">{p.href ? <a href={p.href}>{p.name}</a> : p.name}</span>
-          <span class="mono">{p.year} · {p.status}</span>
-        </div>
-        <p class="blurb">{p.blurb}</p>
-      </li>
-    ))}
+    {projects.map(p => {
+      const color = statusColors[p.statusKind as keyof typeof statusColors];
+      const Wrapper = p.href ? 'a' : 'div';
+      const wrapperProps = p.href ? { href: p.href, target: '_blank', rel: 'noopener' } : {};
+      return (
+        <li>
+          <Wrapper class={`project glass ${p.href ? 'project-link' : ''}`} {...wrapperProps}>
+            <div class="head">
+              <span class="name">{p.name}</span>
+              <span
+                class="status"
+                style={`--dot:${color.dot};--glow:${color.glow}`}
+              >
+                <span class="status-dot"></span>
+                {p.status}
+              </span>
+            </div>
+            <p class="blurb">{p.blurb}</p>
+            <div class="foot">
+              <ul class="stack">
+                {p.stack.map(t => <li class="chip mono">{t}</li>)}
+              </ul>
+              <span class="year mono">{p.year}</span>
+            </div>
+            {p.href && (
+              <svg class="arrow" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            )}
+          </Wrapper>
+        </li>
+      );
+    })}
   </ul>
 </section>
 
 <style>
-  .projects { display: flex; flex-direction: column; gap: 1.75rem; }
-  .project { border-top: 1px solid var(--rule); padding-top: 1rem; }
-  .row {
-    display: flex; justify-content: space-between; align-items: baseline;
-    gap: 1rem; flex-wrap: wrap;
+  .projects {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
   }
-  .name { font-family: var(--font-serif); font-weight: 600; font-size: 1.1rem; }
-  .blurb { color: var(--muted); margin-top: 0.35rem; font-size: 0.95rem; }
+  .project {
+    display: block;
+    padding: 1.4rem 1.5rem;
+    color: inherit;
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                box-shadow 220ms ease,
+                background 220ms ease;
+  }
+  .project-link { cursor: pointer; }
+  .project-link:hover {
+    transform: translateY(-2px);
+    background: var(--bg-elev-1);
+    box-shadow: var(--shadow-glass-hover);
+  }
+  .project-link:hover .arrow { color: var(--accent); transform: translate(2px, -2px); }
+
+  .head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; margin-bottom: 0.5rem;
+  }
+  .name {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .status {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    padding: 3px 8px 3px 6px;
+    border-radius: 999px;
+    background: var(--bg-elev-1);
+    border: 1px solid var(--edge);
+  }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 999px;
+    background: var(--dot);
+    box-shadow: 0 0 8px var(--glow);
+  }
+
+  .blurb {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .foot {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--edge);
+  }
+  .stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chip {
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--bg-elev-1);
+    border: 1px solid var(--edge);
+    color: var(--ink-soft);
+    font-size: 0.7rem;
+  }
+  .year { color: var(--ink-faint); }
+
+  .arrow {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    color: var(--ink-faint);
+    transition: color 200ms ease, transform 200ms ease;
+  }
+
+  @media (max-width: 600px) {
+    .project { padding: 1.15rem 1.2rem; }
+  }
 </style>

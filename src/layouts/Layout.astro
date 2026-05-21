@@ -1,5 +1,5 @@
 ---
-import '@fontsource-variable/fraunces/index.css';
+import '@fontsource-variable/inter';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import '../styles/global.css';
@@ -12,12 +12,15 @@ interface Props {
 
 const { title, description = 'Devendra Reddy — founder and product builder.', ogImage = '/og.png' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#07080F" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <title>{title}</title>
   <meta name="description" content={description} />
@@ -30,6 +33,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
   <meta name="twitter:card" content="summary_large_image" />
 </head>
 <body>
+  <nav class="nav" aria-label="Primary">
+    <a href="/" class="nav-brand">dr</a>
+    {isHome ? (
+      <>
+        <a href="#about">about</a>
+        <a href="#projects">work</a>
+        <a href="#writing">writing</a>
+        <a href="#contact">contact</a>
+      </>
+    ) : (
+      <>
+        <a href="/">home</a>
+        <a href="/writing/">writing</a>
+      </>
+    )}
+  </nav>
   <main class="container">
     <slot />
   </main>
