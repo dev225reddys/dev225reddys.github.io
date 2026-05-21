@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map(post => ({ params: { slug: post.slug }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<Layout title={`${post.data.title} — Devendra Reddy`} description={post.data.summary}>
+  <article>
+    <p class="mono date">{fmt(post.data.date)}</p>
+    <h1>{post.data.title}</h1>
+    <div class="body"><Content /></div>
+    <p class="back"><a href="/writing/">← all posts</a></p>
+  </article>
+</Layout>
+
+<style>
+  .date { color: var(--muted); margin-bottom: 0.5rem; }
+  h1 { font-family: var(--font-serif); font-weight: 600; font-size: 2rem; line-height: 1.15; margin-bottom: 2rem; }
+  .body :global(p) { margin-bottom: 1.25rem; }
+  .body :global(h2) { font-family: var(--font-serif); font-weight: 600; font-size: 1.35rem; margin: 2.5rem 0 1rem; }
+  .body :global(h3) { font-family: var(--font-serif); font-weight: 600; font-size: 1.1rem; margin: 2rem 0 0.75rem; }
+  .body :global(a) { color: var(--accent); }
+  .body :global(code) { font-family: var(--font-mono); font-size: 0.85em; background: var(--rule); padding: 0.05em 0.3em; border-radius: 3px; }
+  .body :global(pre) { background: #F2EFE6; padding: 1rem; border-radius: 4px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.85rem; }
+  .body :global(blockquote) { border-left: 3px solid var(--rule); padding-left: 1rem; color: var(--muted); font-style: italic; }
+  .back { margin-top: 4rem; }
+</style>

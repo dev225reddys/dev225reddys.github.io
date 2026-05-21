@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const byYear = posts.reduce<Record<string, typeof posts>>((acc, p) => {
+  const y = String(p.data.date.getFullYear());
+  (acc[y] ||= []).push(p);
+  return acc;
+}, {});
+
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<Layout title="Writing — Devendra Reddy">
+  <p class="section-label">writing</p>
+  <p class="muted intro">Notes on what I'm building.</p>
+  {years.map(year => (
+    <section class="year">
+      <h2 class="mono year-label">{year}</h2>
+      <ul>
+        {byYear[year].map(p => (
+          <li>
+            <span class="mono">{fmt(p.data.date)}</span>
+            <a href={`/writing/${p.slug}/`}>{p.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+  <p class="back"><a href="/">← back</a></p>
+</Layout>
+
+<style>
+  .intro { margin-bottom: 2.5rem; }
+  .year { margin-top: 2.5rem; }
+  .year-label { color: var(--muted); margin-bottom: 0.75rem; font-size: 0.9rem; }
+  .year ul { display: flex; flex-direction: column; gap: 0.5rem; }
+  .year li { display: flex; gap: 1rem; align-items: baseline; }
+  .back { margin-top: 4rem; }
+</style>
