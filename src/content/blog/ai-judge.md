@@ -28,7 +28,7 @@ Nothing below is published. HackerRank has not documented this system, so every 
 derived either from a hard constraint of real-time voice or from behaviour I observed
 directly. I have marked which is which.
 
-![Three-phase architecture of an AI interviewer: an offline analysis pass producing an evidence pack, a real-time voice loop with turn detection, streaming transcription, an interviewer model and streaming speech, then offline rubric grading](/judge-architecture.png)
+![Three-phase architecture of an AI interviewer: an offline analysis pass producing an evidence pack, a real-time voice loop with turn detection, streaming transcription, an interviewer model and streaming speech, then offline rubric grading](/ai-judge-architecture.png)
 
 ### The latency budget decides the design
 
@@ -107,7 +107,7 @@ arithmetic. Anyone can reproduce this; the leaderboard is public.
 
 ### The finding
 
-![Bar chart of Pearson correlations between graded axes: interview to code zip 0.522, code zip to output CSV 0.532, interview to output CSV 0.391, interview to chat transcript 0.386](/judge-correlations.png)
+![Bar chart of Pearson correlations between graded axes: interview to code zip 0.522, code zip to output CSV 0.532, interview to output CSV 0.391, interview to chat transcript 0.386](/ai-judge-correlations.png)
 
 The interview score correlates with the code score at **r = +0.52**. Two *artifact* scores —
 the code and the predictions, both direct measurements of the same submission — correlate at
@@ -127,7 +127,7 @@ gap is trainable, and most people do not train it.
 
 ### The grading signature
 
-![Histogram of AI judge scores as a percentage of the 30-point axis, roughly normal, centred near 53 percent, with no zeros and a maximum of 87 percent](/judge-distribution.png)
+![Histogram of AI judge scores as a percentage of the 30-point axis, roughly normal, centred near 53 percent, with no zeros and a maximum of 87 percent](/ai-judge-distribution.png)
 
 Three things stand out.
 
